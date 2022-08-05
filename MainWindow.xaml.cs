@@ -17,23 +17,21 @@ namespace WpfApp1
         public string pathImage { get; set; }
         public string pathModel { get; set; }
 
+        protected MLContext mlContext;
+        protected DataViewSchema schema;
+        protected ITransformer model;
+        protected PredictionEngine<ModelInput, ModelOutput> engine;
+
+
         public MainWindow()
         {
             InitializeComponent();
+            mlContext = new MLContext();
         }
 
         public List<string> Logic_Predict(string path)
-        {
-            MLContext mlContext = new MLContext();
-
-            DataViewSchema schema;
-            ITransformer model;
-            var file = File.OpenRead(pathModel);
-            model = mlContext.Model.Load(file, out schema);
-
-            var engine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(model);
-
-            var transformation = engine.Predict(new ModelInput() { Label = "sample", ImageSource = path });
+        {                       
+            ModelOutput transformation = engine.Predict(new ModelInput() { Label = "sample", ImageSource = path });
             double score = transformation.Score[0] * 100;
 
             score = Math.Round(score, 2);
@@ -71,7 +69,8 @@ namespace WpfApp1
 
         private void Button_Click_Predict(object sender, RoutedEventArgs e)
         {
-            var res = Logic_Predict(pathImage);
+            List<string> res = Logic_Predict(pathImage);
+
             if (res[0] == "Parazite")
             {
                 txtblcResult.Text = res[0];
@@ -86,6 +85,7 @@ namespace WpfApp1
             }
         }
 
+        // добавление модели
         private void MenuItem_Click_AddModel(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -96,6 +96,12 @@ namespace WpfApp1
                 flag_Model.Background = System.Windows.Media.Brushes.Green;
                 MessageBox.Show("Model added.");
             }
+            FileStream file = File.OpenRead(pathModel); // выбираем путь
+            model = mlContext.Model.Load(file, out schema);
+
+            engine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(model);
+
+
         }
     }
 }
