@@ -3,20 +3,9 @@ using Microsoft.ML;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfApp1
 {
@@ -27,11 +16,10 @@ namespace WpfApp1
     {
         public string pathImage { get; set; }
         public string pathModel { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
-
-
         }
 
         public List<string> Logic_Predict(string path)
@@ -47,7 +35,7 @@ namespace WpfApp1
 
             var transformation = engine.Predict(new ModelInput() { Label = "sample", ImageSource = path });
             double score = transformation.Score[0] * 100;
-            
+
             score = Math.Round(score, 2);
             List<string> result = new List<string>() { transformation.Prediction, score.ToString() };
             return result;
@@ -58,15 +46,15 @@ namespace WpfApp1
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == true)
             {
-                try { 
+                try
+                {
                     pathImage = ofd.FileName;
                     img1.Source = new BitmapImage(new Uri(pathImage));
                 }
                 catch (Exception ex)
-                { 
+                {
                     MessageBox.Show(ex.Message);
                 }
-
             }
         }
 
@@ -80,13 +68,14 @@ namespace WpfApp1
             InfoWindow infoWindow = new InfoWindow();
             infoWindow.Show();
         }
+
         private void Button_Click_Predict(object sender, RoutedEventArgs e)
         {
             var res = Logic_Predict(pathImage);
             if (res[0] == "Parazite")
             {
                 txtblcResult.Text = res[0];
-                txtblcProcent.Text = res[1]+"%";
+                txtblcProcent.Text = res[1] + "%";
                 txtblcResult.Foreground = System.Windows.Media.Brushes.Red;
             }
             else
@@ -95,8 +84,6 @@ namespace WpfApp1
                 txtblcProcent.Text = res[1] + "%";
                 txtblcResult.Foreground = System.Windows.Media.Brushes.Green;
             }
-            
-
         }
 
         private void MenuItem_Click_AddModel(object sender, RoutedEventArgs e)
@@ -105,11 +92,9 @@ namespace WpfApp1
             ofd.Filter = ".ZIP|*.zip";
             if (ofd.ShowDialog() == true)
             {
-                
                 pathModel = ofd.FileName;
                 flag_Model.Background = System.Windows.Media.Brushes.Green;
                 MessageBox.Show("Model added.");
-
             }
         }
     }
