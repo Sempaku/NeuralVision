@@ -1,6 +1,8 @@
 # NeuralVision
-Приложение на нейронной сети с использованием WPF и ML.NET
-Использован: **.NET Core 3.1**
+Приложение на нейронной сети с использованием **WPF** и **ML.NET**  
+Использован: **.NET Core 3.1**  
+
+![example](https://github.com/Sempaku/NeuralVision/blob/master/Resourses/Example.PNG)
 
 ## Входные данные
 На вход принимается:
