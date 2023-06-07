@@ -23,3 +23,6 @@
 1. Сначала загружаем модель `General/Add Model`
 2. Загружаем изображение клетки `General/Image`
 3. Нажимаем `Analysis`
+
+## Лабораторная работа
+https://drive.google.com/file/d/1ZVur9XtkJKfuyaN8ArXRPJmvDYC1xhgX/view?usp=sharing
